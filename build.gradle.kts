@@ -1,23 +1,23 @@
 plugins {
   kotlin("jvm") version "2.4.20"
+  id("com.ncorti.ktfmt.gradle") version "0.27.0"
 }
 
 group = "to.holepunch"
+
 version = "0.0.0"
 
-repositories {
-  mavenCentral()
-}
+repositories { mavenCentral() }
 
-dependencies {
-  testImplementation(kotlin("test"))
-}
+dependencies { testImplementation(kotlin("test")) }
 
 kotlin {
   jvmToolchain(21)
   explicitApi()
+
+  compilerOptions { allWarningsAsErrors = true }
 }
 
-tasks.test {
-  useJUnitPlatform()
-}
+ktfmt { googleStyle() }
+
+tasks.test { useJUnitPlatform() }
