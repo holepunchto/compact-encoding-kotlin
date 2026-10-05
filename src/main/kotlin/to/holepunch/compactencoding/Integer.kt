@@ -1,6 +1,6 @@
 package to.holepunch.compactencoding
 
-public val uint16: Codec<UShort> = object : Codec<UShort> {
+internal val uint16: Codec<UShort> = object : Codec<UShort> {
   override fun preencode(state: State, value: UShort) {
     state.end += 2
   }
@@ -24,6 +24,8 @@ public val uint16: Codec<UShort> = object : Codec<UShort> {
 
 public val uint: Codec<ULong> = object : Codec<ULong> {
   override fun preencode(state: State, value: ULong) {
+    if (value > 0xffffuL) TODO("uint above 0xffff")
+
     state.end += if (value <= 0xfcuL) 1 else 3
   }
 
@@ -32,8 +34,6 @@ public val uint: Codec<ULong> = object : Codec<ULong> {
       state.buffer[state.start++] = value.toByte()
       return
     }
-
-    if (value > 0xffffuL) throw EncodingException("uint above 0xffff is not supported yet")
 
     state.buffer[state.start++] = 0xfd.toByte()
 
