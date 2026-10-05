@@ -1,6 +1,7 @@
 plugins {
   kotlin("jvm") version "2.4.20"
   id("com.ncorti.ktfmt.gradle") version "0.27.0"
+  `maven-publish`
 }
 
 group = "to.holepunch"
@@ -19,5 +20,9 @@ kotlin {
 }
 
 ktfmt { googleStyle() }
+
+java { withSourcesJar() }
+
+publishing { publications { create<MavenPublication>("maven") { from(components["java"]) } } }
 
 tasks.test { useJUnitPlatform() }
