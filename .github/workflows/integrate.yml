@@ -30,6 +30,8 @@ jobs:
             platform: linux
           - os: macos-latest
             platform: darwin
+          - os: windows-latest
+            platform: win32
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.platform }}
     steps:
