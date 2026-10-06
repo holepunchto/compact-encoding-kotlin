@@ -34,3 +34,18 @@ java {
 publishing { publications { create<MavenPublication>("maven") { from(components["java"]) } } }
 
 tasks.test { useJUnitPlatform() }
+
+val checkStdlibOnly by tasks.registering {
+  val sources = fileTree("src/main/kotlin")
+  inputs.files(sources)
+  doLast {
+    val offenders = sources.files.filter { Regex("""\bjavax?\.""").containsMatchIn(it.readText()) }
+    if (offenders.isNotEmpty()) {
+      throw GradleException(
+        "Codecs use the Kotlin stdlib only, but these reference the JDK: $offenders"
+      )
+    }
+  }
+}
+
+tasks.check { dependsOn(checkStdlibOnly) }
