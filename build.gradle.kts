@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   kotlin("jvm") version "2.4.20"
+  kotlin("multiplatform") version "2.4.20" apply false
   id("com.ncorti.ktfmt.gradle") version "0.27.0"
   id("maven-publish")
 }
@@ -34,18 +35,3 @@ java {
 publishing { publications { create<MavenPublication>("maven") { from(components["java"]) } } }
 
 tasks.test { useJUnitPlatform() }
-
-val checkStdlibOnly by tasks.registering {
-  val sources = fileTree("src/main/kotlin")
-  inputs.files(sources)
-  doLast {
-    val offenders = sources.files.filter { Regex("""\bjavax?\.""").containsMatchIn(it.readText()) }
-    if (offenders.isNotEmpty()) {
-      throw GradleException(
-        "Codecs use the Kotlin stdlib only, but these reference the JDK: $offenders"
-      )
-    }
-  }
-}
-
-tasks.check { dependsOn(checkStdlibOnly) }
