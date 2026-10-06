@@ -1,6 +1,6 @@
 package to.holepunch.compactencoding
 
-internal val uint16: Codec<UShort> =
+public val uint16: Codec<UShort> =
   object : Codec<UShort> {
     override fun preencode(state: State, value: UShort) {
       state.end += 2
