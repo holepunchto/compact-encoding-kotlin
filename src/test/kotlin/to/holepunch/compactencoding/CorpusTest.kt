@@ -183,7 +183,7 @@ class CorpusTest {
           val rules = case.getValue("rules").jsonArray.map { it.jsonPrimitive.content }
           if (rules.none { it in unrepresentable })
             fail("$id: unrepresentable on a rule that is not marked")
-          return@dynamicTest
+          abort<Nothing>("unrepresentable")
         }
         assertEquals(expected(answers.getValue(id).jsonObject), got, id)
       }
