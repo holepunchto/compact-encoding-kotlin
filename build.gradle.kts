@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   kotlin("jvm") version "2.4.20"
+  kotlin("multiplatform") version "2.4.20" apply false
   id("com.ncorti.ktfmt.gradle") version "0.27.0"
   id("maven-publish")
 }
