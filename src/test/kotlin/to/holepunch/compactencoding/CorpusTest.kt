@@ -121,12 +121,6 @@ private val adapters: Map<String, Adapter<*>> =
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
   )
 
-private fun ByteArray.hex(): String =
-  joinToString("") { (it.toInt() and 0xff).toString(16).padStart(2, '0') }
-
-private fun bytes(hex: String): ByteArray =
-  ByteArray(hex.length / 2) { hex.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
-
 private fun <T> expected(adapter: Adapter<T>, answer: JsonObject): Map<String, String> =
   answer.mapValues { (key, v) ->
     if (key == "decodes") adapter.value(v)?.let(adapter.show) ?: v.jsonPrimitive.content
@@ -135,7 +129,7 @@ private fun <T> expected(adapter: Adapter<T>, answer: JsonObject): Map<String, S
 
 private fun <T> outcome(adapter: Adapter<T>, input: JsonObject): Map<String, String>? {
   input["bytes"]?.let {
-    val state = State(bytes(it.jsonPrimitive.content))
+    val state = State(it.jsonPrimitive.content.hexToByteArray())
     return try {
       val decoded = adapter.codec.decode(state)
       mapOf("decodes" to adapter.show(decoded), "read" to state.start.toString())
@@ -145,7 +139,7 @@ private fun <T> outcome(adapter: Adapter<T>, input: JsonObject): Map<String, Str
   }
   val value = adapter.value(input.getValue("value")) ?: return null
   return try {
-    mapOf("hex" to encode(adapter.codec, value).hex())
+    mapOf("hex" to encode(adapter.codec, value).toHexString())
   } catch (e: EncodingException) {
     mapOf("refused" to "true")
   }
