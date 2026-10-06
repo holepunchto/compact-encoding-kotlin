@@ -48,8 +48,9 @@ val packCorpus =
       else listOf("npm")
     inputs.property("version", corpusVersion)
     outputs.file(corpusDir.map { it.file("compact-encoding-test-$corpusVersion.tgz") })
-    workingDir(corpusDir)
-    doFirst { corpusDir.get().asFile.mkdirs() }
+    val dir = corpusDir.get().asFile
+    workingDir(dir)
+    doFirst { dir.mkdirs() }
     commandLine(npm + listOf("pack", "compact-encoding-test@$corpusVersion", "--silent"))
   }
 
@@ -62,8 +63,8 @@ val unpackCorpus =
 tasks.test {
   useJUnitPlatform()
   inputs.files(unpackCorpus)
-  systemProperty(
-    "corpus.fixtures",
-    corpusDir.get().dir("unpacked/package/fixtures").asFile.path,
+  val fixtures = corpusDir.map { it.dir("unpacked/package/fixtures").asFile.path }
+  jvmArgumentProviders.add(
+    CommandLineArgumentProvider { listOf("-Dcorpus.fixtures=${fixtures.get()}") }
   )
 }
