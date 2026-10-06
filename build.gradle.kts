@@ -13,7 +13,10 @@ version = System.getenv("VERSION") ?: "0.0.0"
 
 repositories { mavenCentral() }
 
-dependencies { testImplementation(kotlin("test")) }
+dependencies {
+  testImplementation(kotlin("test"))
+  testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+}
 
 kotlin {
   jvmToolchain(21)
@@ -34,4 +37,33 @@ java {
 
 publishing { publications { create<MavenPublication>("maven") { from(components["java"]) } } }
 
-tasks.test { useJUnitPlatform() }
+val corpusVersion = "0.1.0"
+
+val corpusDir = layout.buildDirectory.dir("corpus")
+
+val packCorpus =
+  tasks.register<Exec>("packCorpus") {
+    val npm =
+      if (System.getProperty("os.name").startsWith("Windows")) listOf("cmd", "/c", "npm")
+      else listOf("npm")
+    inputs.property("version", corpusVersion)
+    outputs.file(corpusDir.map { it.file("compact-encoding-test-$corpusVersion.tgz") })
+    workingDir(corpusDir)
+    doFirst { corpusDir.get().asFile.mkdirs() }
+    commandLine(npm + listOf("pack", "compact-encoding-test@$corpusVersion", "--silent"))
+  }
+
+val unpackCorpus =
+  tasks.register<Sync>("unpackCorpus") {
+    from(packCorpus.map { tarTree(it.outputs.files.singleFile) })
+    into(corpusDir.map { it.dir("unpacked") })
+  }
+
+tasks.test {
+  useJUnitPlatform()
+  inputs.files(unpackCorpus)
+  systemProperty(
+    "corpus.fixtures",
+    corpusDir.get().dir("unpacked/package/fixtures").asFile.path,
+  )
+}
