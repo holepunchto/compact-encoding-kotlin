@@ -45,6 +45,13 @@ public val uint: Codec<ULong> =
     override fun decode(state: State): ULong {
       if (state.remaining < 1) throw DecodingException("out of bounds")
 
-      return state.buffer[state.start++].toUByte().toULong()
+      val prefix = state.buffer[state.start++].toUByte().toInt()
+
+      return when (prefix) {
+        0xfd -> uint16.decode(state).toULong()
+        0xfe -> TODO("uint 0xfe form")
+        0xff -> TODO("uint 0xff form")
+        else -> prefix.toULong()
+      }
     }
   }
