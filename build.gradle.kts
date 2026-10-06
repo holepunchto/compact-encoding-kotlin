@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
   kotlin("jvm") version "2.4.20"
   id("com.ncorti.ktfmt.gradle") version "0.27.0"
@@ -16,12 +18,18 @@ kotlin {
   jvmToolchain(21)
   explicitApi()
 
-  compilerOptions { allWarningsAsErrors = true }
+  compilerOptions {
+    allWarningsAsErrors = true
+    jvmTarget = JvmTarget.JVM_11
+  }
 }
 
 ktfmt { googleStyle() }
 
-java { withSourcesJar() }
+java {
+  targetCompatibility = JavaVersion.VERSION_11
+  withSourcesJar()
+}
 
 publishing { publications { create<MavenPublication>("maven") { from(components["java"]) } } }
 
