@@ -23,12 +23,42 @@ public val uint16: Codec<UShort> =
     }
   }
 
+public val uint32: Codec<UInt> =
+  object : Codec<UInt> {
+    override fun preencode(state: State, value: UInt) {
+      state.end += 4
+    }
+
+    override fun encode(state: State, value: UInt) {
+      val n = value.toInt()
+
+      state.buffer[state.start++] = n.toByte()
+      state.buffer[state.start++] = (n ushr 8).toByte()
+      state.buffer[state.start++] = (n ushr 16).toByte()
+      state.buffer[state.start++] = (n ushr 24).toByte()
+    }
+
+    override fun decode(state: State): UInt {
+      if (state.remaining < 4) throw DecodingException("out of bounds")
+
+      var n = 0
+      for (shift in 0..24 step 8) n = n or (state.buffer[state.start++].toUByte().toInt() shl shift)
+
+      return n.toUInt()
+    }
+  }
+
 public val uint: Codec<ULong> =
   object : Codec<ULong> {
     override fun preencode(state: State, value: ULong) {
-      if (value > 0xffffuL) TODO("uint above 0xffff")
+      if (value > 0xffffffffuL) TODO("uint above 0xffffffff")
 
-      state.end += if (value <= 0xfcuL) 1 else 3
+      state.end +=
+        when {
+          value <= 0xfcuL -> 1
+          value <= 0xffffuL -> 3
+          else -> 5
+        }
     }
 
     override fun encode(state: State, value: ULong) {
@@ -37,9 +67,14 @@ public val uint: Codec<ULong> =
         return
       }
 
-      state.buffer[state.start++] = 0xfd.toByte()
+      if (value <= 0xffffuL) {
+        state.buffer[state.start++] = 0xfd.toByte()
+        uint16.encode(state, value.toUShort())
+        return
+      }
 
-      uint16.encode(state, value.toUShort())
+      state.buffer[state.start++] = 0xfe.toByte()
+      uint32.encode(state, value.toUInt())
     }
 
     override fun decode(state: State): ULong {
@@ -49,7 +84,7 @@ public val uint: Codec<ULong> =
 
       return when (prefix) {
         0xfd -> uint16.decode(state).toULong()
-        0xfe -> TODO("uint 0xfe form")
+        0xfe -> uint32.decode(state).toULong()
         0xff -> TODO("uint 0xff form")
         else -> prefix.toULong()
       }
