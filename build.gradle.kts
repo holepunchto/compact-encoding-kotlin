@@ -51,7 +51,7 @@ val packCorpus =
     val dir = corpusDir.get().asFile
     workingDir(dir)
     doFirst { dir.mkdirs() }
-    commandLine(npm + listOf("pack", "compact-encoding-test@$corpusVersion", "--silent"))
+    commandLine(npm + listOf("pack", "compact-encoding-test@$corpusVersion", "--loglevel=error"))
   }
 
 val unpackCorpus =
