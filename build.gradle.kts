@@ -6,7 +6,7 @@ plugins {
   id("maven-publish")
 }
 
-group = "to.holepunch"
+group = "com.github.holepunchto"
 
 version = System.getenv("VERSION") ?: "0.0.0"
 

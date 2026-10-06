@@ -1,1 +1,1 @@
-rootProject.name = "compact-encoding"
+rootProject.name = "compact-encoding-kotlin"
