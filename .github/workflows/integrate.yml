@@ -42,4 +42,4 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - run: ./gradlew build
+      - run: ./gradlew test
