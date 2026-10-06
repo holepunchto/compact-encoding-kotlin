@@ -5,5 +5,5 @@ repositories { mavenCentral() }
 kotlin {
   js()
 
-  sourceSets { jsMain { kotlin.srcDir("../src/main/kotlin") } }
+  sourceSets { jsMain { kotlin.srcDir("../src/commonMain/kotlin") } }
 }
