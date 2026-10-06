@@ -127,11 +127,11 @@ private val adapters: Map<String, Adapter<*>> =
     "buffer" to
       Adapter(buffer, { it.jsonPrimitive.content.hexToByteArray() }, { it.toHexString() }),
     "int" to Adapter(int, { signed(it) }, { it.toString() }),
-    "utf8" to Adapter(utf8, { string(it) }, { it }),
     "uint" to Adapter(uint, { unsigned(it, 64) }, { it.toString() }),
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
     "uint32" to Adapter(uint32, { unsigned(it, 32)?.toUInt() }, { it.toString() }),
     "uint64" to Adapter(uint64, { unsigned(it, 64) }, { it.toString() }),
+    "utf8" to Adapter(utf8, { string(it) }, { it }),
   )
 
 private fun <T> expected(adapter: Adapter<T>, answer: JsonObject): Map<String, String> =

@@ -30,30 +30,40 @@ public val utf8: Codec<String> =
     }
   }
 
-private const val REPLACEMENT = '�'
+private val REPLACEMENT = Char(0xfffd)
 
-private fun pairAt(value: String, i: Int): Boolean =
+private fun isSurrogatePairAt(value: String, i: Int): Boolean =
   value[i].isHighSurrogate() && i + 1 < value.length && value[i + 1].isLowSurrogate()
+
+private fun scalarAt(value: String, i: Int): Int =
+  when {
+    isSurrogatePairAt(value, i) ->
+      0x10000 +
+        ((value[i] - Char.MIN_HIGH_SURROGATE) shl 10) +
+        (value[i + 1] - Char.MIN_LOW_SURROGATE)
+    value[i].isSurrogate() -> REPLACEMENT.code
+    else -> value[i].code
+  }
+
+private fun utf8Width(scalar: Int): Int =
+  when {
+    scalar < 0x80 -> 1
+    scalar < 0x800 -> 2
+    scalar < 0x10000 -> 3
+    else -> 4
+  }
+
+private fun utf16Width(scalar: Int): Int = if (scalar < 0x10000) 1 else 2
 
 private fun utf8Length(value: String): Int {
   var length = 0
   var i = 0
 
   while (i < value.length) {
-    val c = value[i].code
+    val scalar = scalarAt(value, i)
 
-    if (c < 0x80) {
-      length += 1
-    } else if (c < 0x800) {
-      length += 2
-    } else if (pairAt(value, i)) {
-      length += 4
-      i++
-    } else {
-      length += 3
-    }
-
-    i++
+    length += utf8Width(scalar)
+    i += utf16Width(scalar)
   }
 
   return length
@@ -64,42 +74,39 @@ private fun utf8Write(value: String, buffer: ByteArray, start: Int): Int {
   var i = 0
 
   while (i < value.length) {
-    var c = value[i].code
+    val c = scalarAt(value, i)
 
-    if (pairAt(value, i)) {
-      c = 0x10000 + ((c - 0xd800) shl 10) + (value[++i].code - 0xdc00)
-    } else if (value[i].isSurrogate()) {
-      c = REPLACEMENT.code
+    when (utf8Width(c)) {
+      1 -> buffer[at++] = c.toByte()
+      2 -> {
+        buffer[at++] = (0xc0 or (c shr 6)).toByte()
+        buffer[at++] = (0x80 or (c and 0x3f)).toByte()
+      }
+      3 -> {
+        buffer[at++] = (0xe0 or (c shr 12)).toByte()
+        buffer[at++] = (0x80 or ((c shr 6) and 0x3f)).toByte()
+        buffer[at++] = (0x80 or (c and 0x3f)).toByte()
+      }
+      else -> {
+        buffer[at++] = (0xf0 or (c shr 18)).toByte()
+        buffer[at++] = (0x80 or ((c shr 12) and 0x3f)).toByte()
+        buffer[at++] = (0x80 or ((c shr 6) and 0x3f)).toByte()
+        buffer[at++] = (0x80 or (c and 0x3f)).toByte()
+      }
     }
 
-    if (c < 0x80) {
-      buffer[at++] = c.toByte()
-    } else if (c < 0x800) {
-      buffer[at++] = (0xc0 or (c shr 6)).toByte()
-      buffer[at++] = (0x80 or (c and 0x3f)).toByte()
-    } else if (c < 0x10000) {
-      buffer[at++] = (0xe0 or (c shr 12)).toByte()
-      buffer[at++] = (0x80 or ((c shr 6) and 0x3f)).toByte()
-      buffer[at++] = (0x80 or (c and 0x3f)).toByte()
-    } else {
-      buffer[at++] = (0xf0 or (c shr 18)).toByte()
-      buffer[at++] = (0x80 or ((c shr 12) and 0x3f)).toByte()
-      buffer[at++] = (0x80 or ((c shr 6) and 0x3f)).toByte()
-      buffer[at++] = (0x80 or (c and 0x3f)).toByte()
-    }
-
-    i++
+    i += utf16Width(c)
   }
 
   return at
 }
 
-private fun StringBuilder.appendCodePoint(c: Int) {
-  if (c < 0x10000) {
-    append(c.toChar())
+private fun StringBuilder.appendScalar(scalar: Int) {
+  if (scalar < 0x10000) {
+    append(scalar.toChar())
   } else {
-    append((0xd800 + ((c - 0x10000) shr 10)).toChar())
-    append((0xdc00 + ((c - 0x10000) and 0x3ff)).toChar())
+    append(Char.MIN_HIGH_SURROGATE + ((scalar - 0x10000) shr 10))
+    append(Char.MIN_LOW_SURROGATE + ((scalar - 0x10000) and 0x3ff))
   }
 }
 
@@ -139,21 +146,22 @@ private fun utf8Read(buffer: ByteArray, start: Int, end: Int): String {
       continue
     }
 
-    if (b !in lower..upper) {
+    val continues = b in lower..upper
+
+    lower = 0x80
+    upper = 0xbf
+
+    if (!continues) {
       needed = 0
       seen = 0
-      lower = 0x80
-      upper = 0xbf
       out.append(REPLACEMENT)
       continue
     }
 
-    lower = 0x80
-    upper = 0xbf
     c = (c shl 6) or (b and 0x3f)
 
     if (++seen == needed) {
-      out.appendCodePoint(c)
+      out.appendScalar(c)
       needed = 0
       seen = 0
     }
