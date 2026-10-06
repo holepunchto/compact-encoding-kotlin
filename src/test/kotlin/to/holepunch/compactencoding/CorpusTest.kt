@@ -52,7 +52,6 @@ private val unsupported =
     "float64array" to "not ported yet",
     "frame-uint" to "not ported yet",
     "hex" to "not ported yet",
-    "int" to "not ported yet",
     "int16" to "not ported yet",
     "int16array" to "not ported yet",
     "int16be" to "not ported yet",
@@ -113,8 +112,12 @@ private fun integer(element: JsonElement): BigInteger? =
 private fun unsigned(element: JsonElement, bits: Int): ULong? =
   integer(element)?.takeIf { it.signum() >= 0 && it.bitLength() <= bits }?.toString()?.toULong()
 
+private fun signed(element: JsonElement): Long? =
+  integer(element)?.takeIf { it.bitLength() < 64 }?.toLong()
+
 private val adapters: Map<String, Adapter<*>> =
   mapOf(
+    "int" to Adapter(int, { signed(it) }, { it.toString() }),
     "uint" to Adapter(uint, { unsigned(it, 64) }, { it.toString() }),
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
     "uint32" to Adapter(uint32, { unsigned(it, 32)?.toUInt() }, { it.toString() }),

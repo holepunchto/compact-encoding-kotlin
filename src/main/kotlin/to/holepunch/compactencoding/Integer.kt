@@ -116,3 +116,16 @@ public val uint: Codec<ULong> =
       }
     }
   }
+
+public val int: Codec<Long> =
+  object : Codec<Long> {
+    override fun preencode(state: State, value: Long) {
+      uint.preencode(state, zigZagEncode(value))
+    }
+
+    override fun encode(state: State, value: Long) {
+      uint.encode(state, zigZagEncode(value))
+    }
+
+    override fun decode(state: State): Long = zigZagDecode(uint.decode(state))
+  }
