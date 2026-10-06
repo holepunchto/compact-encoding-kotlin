@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -96,7 +97,6 @@ private val unsupported =
     "uint8array" to "not ported yet",
     "uintbe" to "not ported yet",
     "utf16le" to "not ported yet",
-    "utf8" to "not ported yet",
   )
 
 private class Adapter<T>(
@@ -114,12 +114,20 @@ private fun unsigned(element: JsonElement, bits: Int): ULong? =
 private fun signed(element: JsonElement): Long? =
   integer(element)?.takeIf { it.bitLength() < 64 }?.toLong()
 
+private fun string(element: JsonElement): String =
+  (element as? JsonObject)
+    ?.getValue("units")
+    ?.jsonArray
+    ?.map { it.jsonPrimitive.int.toChar() }
+    ?.joinToString("") ?: element.jsonPrimitive.content
+
 private val adapters: Map<String, Adapter<*>> =
   mapOf(
     "bool" to Adapter(bool, { it.jsonPrimitive.booleanOrNull }, { it.toString() }),
     "buffer" to
       Adapter(buffer, { it.jsonPrimitive.content.hexToByteArray() }, { it.toHexString() }),
     "int" to Adapter(int, { signed(it) }, { it.toString() }),
+    "utf8" to Adapter(utf8, { string(it) }, { it }),
     "uint" to Adapter(uint, { unsigned(it, 64) }, { it.toString() }),
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
     "uint32" to Adapter(uint32, { unsigned(it, 32)?.toUInt() }, { it.toString() }),
