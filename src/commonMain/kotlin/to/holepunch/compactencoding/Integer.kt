@@ -1,7 +1,7 @@
 package to.holepunch.compactencoding
 
 /**
- * A [UShort] in two little-endian bytes.
+ * A `UShort` in two little-endian bytes.
  *
  * Decoding throws [DecodingException] when fewer than two bytes remain.
  */
@@ -29,7 +29,7 @@ public val uint16: Codec<UShort> =
   }
 
 /**
- * A [UInt] in four little-endian bytes.
+ * A `UInt` in four little-endian bytes.
  *
  * Decoding throws [DecodingException] when fewer than four bytes remain.
  */
@@ -59,7 +59,7 @@ public val uint32: Codec<UInt> =
   }
 
 /**
- * A [ULong] in eight little-endian bytes.
+ * A `ULong` in eight little-endian bytes.
  *
  * Decoding throws [DecodingException] when fewer than eight bytes remain.
  */
@@ -85,7 +85,7 @@ public val uint64: Codec<ULong> =
   }
 
 /**
- * A [ULong] in its shortest form: one byte up to 0xfc, otherwise a 0xfd, 0xfe or 0xff prefix
+ * A `ULong` in its shortest form: one byte up to 0xfc, otherwise a 0xfd, 0xfe or 0xff prefix
  * followed by a [uint16], [uint32] or [uint64]. Decoding accepts a longer form than the value
  * needs.
  *
