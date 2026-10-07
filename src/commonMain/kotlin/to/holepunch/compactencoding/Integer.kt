@@ -106,7 +106,10 @@ public val uint: Codec<ULong> =
     override fun decode(state: State): ULong {
       state.ensureRemaining("uint", 1)
 
-      val prefix = state.buffer[state.start++].toUByte().toInt()
+      val prefix = state.buffer[state.start].toUByte().toInt()
+
+      state.ensureRemaining("uint", uintWidth(prefix))
+      state.start++
 
       return when (prefix) {
         0xfd -> uint16.decode(state).toULong()
@@ -128,4 +131,12 @@ public val int: Codec<Long> =
     }
 
     override fun decode(state: State): Long = zigZagDecode(uint.decode(state))
+  }
+
+private fun uintWidth(prefix: Int): Int =
+  when (prefix) {
+    0xfd -> 3
+    0xfe -> 5
+    0xff -> 9
+    else -> 1
   }
