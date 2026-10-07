@@ -19,7 +19,7 @@ public val utf8: Codec<String> =
     override fun decode(state: State): String {
       val count = uint.decode(state)
 
-      if (count > state.remaining.toULong()) throw DecodingException("out of bounds")
+      state.ensureCount("utf8", count)
 
       val end = state.start + count.toInt()
       val value = utf8Read(state.buffer, state.start, end)

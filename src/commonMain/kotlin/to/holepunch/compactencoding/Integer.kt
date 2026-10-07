@@ -14,7 +14,7 @@ public val uint16: Codec<UShort> =
     }
 
     override fun decode(state: State): UShort {
-      if (state.remaining < 2) throw DecodingException("out of bounds")
+      state.ensureRemaining("uint16", 2)
 
       val lo = state.buffer[state.start++].toUByte().toInt()
       val hi = state.buffer[state.start++].toUByte().toInt()
@@ -39,7 +39,7 @@ public val uint32: Codec<UInt> =
     }
 
     override fun decode(state: State): UInt {
-      if (state.remaining < 4) throw DecodingException("out of bounds")
+      state.ensureRemaining("uint32", 4)
 
       var n = 0
       for (shift in 0..24 step 8) n = n or (state.buffer[state.start++].toUByte().toInt() shl shift)
@@ -59,7 +59,7 @@ public val uint64: Codec<ULong> =
     }
 
     override fun decode(state: State): ULong {
-      if (state.remaining < 8) throw DecodingException("out of bounds")
+      state.ensureRemaining("uint64", 8)
 
       var n = 0uL
       for (shift in 0..56 step 8) n =
@@ -104,7 +104,7 @@ public val uint: Codec<ULong> =
     }
 
     override fun decode(state: State): ULong {
-      if (state.remaining < 1) throw DecodingException("out of bounds")
+      state.ensureRemaining("uint", 1)
 
       val prefix = state.buffer[state.start++].toUByte().toInt()
 

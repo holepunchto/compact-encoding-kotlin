@@ -19,7 +19,7 @@ public val buffer: Codec<ByteArray> =
     override fun decode(state: State): ByteArray {
       val count = uint.decode(state)
 
-      if (count > state.remaining.toULong()) throw DecodingException("out of bounds")
+      state.ensureCount("buffer", count)
 
       val end = state.start + count.toInt()
       val value = state.buffer.copyOfRange(state.start, end)
