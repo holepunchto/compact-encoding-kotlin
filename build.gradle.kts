@@ -71,3 +71,26 @@ tasks.test {
     CommandLineArgumentProvider { listOf("-Dcorpus.fixtures=${fixtures.get()}") }
   )
 }
+
+val checkAscii =
+  tasks.register("checkAscii") {
+    val root = rootDir
+    val files =
+      fileTree(root) {
+        include("**/*.kt", "**/*.kts", "**/*.md", "**/*.yml", "**/*.properties")
+        exclude("**/build/**", "**/.gradle/**", "**/.kotlin/**")
+      }
+    inputs.files(files)
+    doLast {
+      val lines =
+        files.files.flatMap { file ->
+          file.readLines().mapIndexedNotNull { i, line ->
+            if (line.any { it.code > 0x7f }) "${file.relativeTo(root)}:${i + 1}" else null
+          }
+        }
+      if (lines.isNotEmpty())
+        throw GradleException("Non-ASCII characters at:\n" + lines.joinToString("\n"))
+    }
+  }
+
+tasks.check { dependsOn(checkAscii) }
