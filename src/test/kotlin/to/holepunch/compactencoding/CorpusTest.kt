@@ -38,7 +38,6 @@ private val unsupported =
     "biguint64array" to "not ported yet",
     "binary" to "not ported yet",
     "bitarray" to "not ported yet",
-    "buffer" to "not ported yet",
     "date" to "not ported yet",
     "fixed-16" to "not ported yet",
     "fixed-24" to "not ported yet",
@@ -118,6 +117,8 @@ private fun signed(element: JsonElement): Long? =
 private val adapters: Map<String, Adapter<*>> =
   mapOf(
     "bool" to Adapter(bool, { it.jsonPrimitive.booleanOrNull }, { it.toString() }),
+    "buffer" to
+      Adapter(buffer, { it.jsonPrimitive.content.hexToByteArray() }, { it.toHexString() }),
     "int" to Adapter(int, { signed(it) }, { it.toString() }),
     "uint" to Adapter(uint, { unsigned(it, 64) }, { it.toString() }),
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
