@@ -1,15 +1,25 @@
 package to.holepunch.compactencoding
 
+/**
+ * A buffer and the window into it that codecs read and write.
+ *
+ * @property buffer the bytes being encoded into or decoded from.
+ */
 public class State(public var buffer: ByteArray = ByteArray(0)) {
+  /** Where the next read or write happens. */
   public var start: Int = 0
+  /** Where the window ends. While preencoding, the size so far. */
   public var end: Int = buffer.size
+  /** The bytes between [start] and [end]. */
   public val remaining: Int
     get() = end - start
 
+  /** Replaces [buffer] with [end] zero bytes to encode into. */
   public fun allocate() {
     buffer = ByteArray(end)
   }
 
+  /** Moves [start] back to the first byte. */
   public fun rewind() {
     start = 0
   }
