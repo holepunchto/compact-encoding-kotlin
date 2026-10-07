@@ -48,7 +48,7 @@ kotlin {
 
 ktfmt { googleStyle() }
 
-val corpusVersion = "0.1.0"
+val corpusVersion = "0.2.0"
 
 val corpusDir = layout.buildDirectory.dir("corpus")
 
