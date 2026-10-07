@@ -127,10 +127,11 @@ private fun ByteArray.hex(): String =
 private fun bytes(hex: String): ByteArray =
   ByteArray(hex.length / 2) { hex.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
 
-private fun expected(answer: JsonObject): Map<String, String> = answer.mapValues { (key, v) ->
-  if (key == "decodes") integer(v)?.toString() ?: v.jsonPrimitive.content
-  else v.jsonPrimitive.content
-}
+private fun <T> expected(adapter: Adapter<T>, answer: JsonObject): Map<String, String> =
+  answer.mapValues { (key, v) ->
+    if (key == "decodes") adapter.value(v)?.let(adapter.show) ?: v.jsonPrimitive.content
+    else v.jsonPrimitive.content
+  }
 
 private fun <T> outcome(adapter: Adapter<T>, input: JsonObject): Map<String, String>? {
   input["bytes"]?.let {
@@ -185,7 +186,7 @@ class CorpusTest {
             fail("$id: unrepresentable on a rule that is not marked")
           abort<Nothing>("unrepresentable")
         }
-        assertEquals(expected(answers.getValue(id).jsonObject), got, id)
+        assertEquals(expected(adapter, answers.getValue(id).jsonObject), got, id)
       }
     }
   }
