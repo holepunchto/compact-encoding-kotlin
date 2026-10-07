@@ -35,6 +35,7 @@ kotlin {
     namespace = "to.holepunch.compactencoding"
     compileSdk = 36
     minSdk = 29
+    withHostTest {}
     compilerOptions { jvmTarget = JvmTarget.JVM_11 }
   }
 
