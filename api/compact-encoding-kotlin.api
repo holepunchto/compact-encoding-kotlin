@@ -55,3 +55,4 @@ public final class to/holepunch/compactencoding/State {
 public final class to/holepunch/compactencoding/StringKt {
 	public static final fun getUtf8 ()Lto/holepunch/compactencoding/Codec;
 }
+
