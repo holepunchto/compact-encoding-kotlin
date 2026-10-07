@@ -25,10 +25,6 @@ public final class to/holepunch/compactencoding/DecodingException : to/holepunch
 	public fun <init> (Ljava/lang/String;)V
 }
 
-public final class to/holepunch/compactencoding/EncodingException : to/holepunch/compactencoding/CompactEncodingException {
-	public fun <init> (Ljava/lang/String;)V
-}
-
 public final class to/holepunch/compactencoding/IntegerKt {
 	public static final fun getInt ()Lto/holepunch/compactencoding/Codec;
 	public static final fun getUint ()Lto/holepunch/compactencoding/Codec;

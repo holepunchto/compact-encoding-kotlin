@@ -151,11 +151,7 @@ private fun <T> outcome(adapter: Adapter<T>, input: JsonObject): Map<String, Str
     }
   }
   val value = adapter.value(input.getValue("value")) ?: return null
-  return try {
-    mapOf("hex" to encode(adapter.codec, value).toHexString())
-  } catch (e: EncodingException) {
-    mapOf("refused" to "true")
-  }
+  return mapOf("hex" to encode(adapter.codec, value).toHexString())
 }
 
 class CorpusTest {
