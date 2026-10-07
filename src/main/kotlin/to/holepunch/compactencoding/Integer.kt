@@ -48,16 +48,36 @@ public val uint32: Codec<UInt> =
     }
   }
 
+public val uint64: Codec<ULong> =
+  object : Codec<ULong> {
+    override fun preencode(state: State, value: ULong) {
+      state.end += 8
+    }
+
+    override fun encode(state: State, value: ULong) {
+      for (shift in 0..56 step 8) state.buffer[state.start++] = (value shr shift).toByte()
+    }
+
+    override fun decode(state: State): ULong {
+      if (state.remaining < 8) throw DecodingException("out of bounds")
+
+      var n = 0uL
+      for (shift in 0..56 step 8) n =
+        n or (state.buffer[state.start++].toUByte().toULong() shl shift)
+
+      return n
+    }
+  }
+
 public val uint: Codec<ULong> =
   object : Codec<ULong> {
     override fun preencode(state: State, value: ULong) {
-      if (value > 0xffffffffuL) TODO("uint above 0xffffffff")
-
       state.end +=
         when {
           value <= 0xfcuL -> 1
           value <= 0xffffuL -> 3
-          else -> 5
+          value <= 0xffffffffuL -> 5
+          else -> 9
         }
     }
 
@@ -73,8 +93,14 @@ public val uint: Codec<ULong> =
         return
       }
 
-      state.buffer[state.start++] = 0xfe.toByte()
-      uint32.encode(state, value.toUInt())
+      if (value <= 0xffffffffuL) {
+        state.buffer[state.start++] = 0xfe.toByte()
+        uint32.encode(state, value.toUInt())
+        return
+      }
+
+      state.buffer[state.start++] = 0xff.toByte()
+      uint64.encode(state, value)
     }
 
     override fun decode(state: State): ULong {
@@ -85,7 +111,7 @@ public val uint: Codec<ULong> =
       return when (prefix) {
         0xfd -> uint16.decode(state).toULong()
         0xfe -> uint32.decode(state).toULong()
-        0xff -> TODO("uint 0xff form")
+        0xff -> uint64.decode(state)
         else -> prefix.toULong()
       }
     }
