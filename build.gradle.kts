@@ -52,9 +52,7 @@ val packCorpus =
       else listOf("npm")
     inputs.property("version", corpusVersion)
     outputs.file(corpusDir.map { it.file("compact-encoding-test-$corpusVersion.tgz") })
-    val dir = corpusDir.get().asFile
-    workingDir(dir)
-    doFirst { dir.mkdirs() }
+    workingDir(corpusDir)
     commandLine(npm + listOf("pack", "compact-encoding-test@$corpusVersion", "--loglevel=error"))
   }
 
