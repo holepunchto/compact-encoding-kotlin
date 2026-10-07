@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
   kotlin("jvm") version "2.4.20"
@@ -25,6 +26,8 @@ kotlin {
   compilerOptions {
     allWarningsAsErrors = true
     jvmTarget = JvmTarget.JVM_11
+    apiVersion = KotlinVersion.KOTLIN_2_2
+    languageVersion = KotlinVersion.KOTLIN_2_2
   }
 }
 
