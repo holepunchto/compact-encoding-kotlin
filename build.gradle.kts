@@ -23,6 +23,8 @@ kotlin {
   jvmToolchain(21)
   explicitApi()
 
+  @OptIn(org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class) abiValidation()
+
   compilerOptions {
     allWarningsAsErrors = true
     jvmTarget = JvmTarget.JVM_11
