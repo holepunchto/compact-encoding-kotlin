@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-  kotlin("multiplatform") version "2.4.20"
-  id("com.android.kotlin.multiplatform.library") version "9.3.0"
-  id("com.ncorti.ktfmt.gradle") version "0.27.0"
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.android.kotlin.multiplatform.library)
+  alias(libs.plugins.ktfmt)
   id("maven-publish")
 }
 
@@ -40,9 +40,7 @@ kotlin {
 
   sourceSets {
     commonTest.dependencies { implementation(kotlin("test")) }
-    jvmTest.dependencies {
-      implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
-    }
+    jvmTest.dependencies { implementation(libs.kotlinx.serialization.json) }
   }
 }
 
@@ -85,7 +83,7 @@ val checkAscii =
     val root = rootDir
     val files =
       fileTree(root) {
-        include("**/*.kt", "**/*.kts", "**/*.md", "**/*.yml", "**/*.properties")
+        include("**/*.kt", "**/*.kts", "**/*.md", "**/*.yml", "**/*.properties", "**/*.toml")
         exclude("**/build/**", "**/.gradle/**", "**/.kotlin/**")
       }
     inputs.files(files)
