@@ -12,11 +12,6 @@ group = "com.github.holepunchto"
 
 version = System.getenv("VERSION") ?: "0.0.0"
 
-repositories {
-  google()
-  mavenCentral()
-}
-
 kotlin {
   jvmToolchain(21)
   explicitApi()
