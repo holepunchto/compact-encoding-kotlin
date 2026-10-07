@@ -88,7 +88,6 @@ private val unsupported =
     "uint16array" to "not ported yet",
     "uint16be" to "not ported yet",
     "uint24" to "not ported yet",
-    "uint32" to "not ported yet",
     "uint32array" to "not ported yet",
     "uint32be" to "not ported yet",
     "uint40" to "not ported yet",
@@ -119,6 +118,7 @@ private val adapters: Map<String, Adapter<*>> =
   mapOf(
     "uint" to Adapter(uint, { unsigned(it, 64) }, { it.toString() }),
     "uint16" to Adapter(uint16, { unsigned(it, 16)?.toUShort() }, { it.toString() }),
+    "uint32" to Adapter(uint32, { unsigned(it, 32)?.toUInt() }, { it.toString() }),
   )
 
 private fun <T> expected(adapter: Adapter<T>, answer: JsonObject): Map<String, String> =
