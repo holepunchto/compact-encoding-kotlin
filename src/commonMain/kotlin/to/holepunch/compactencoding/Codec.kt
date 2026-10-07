@@ -10,8 +10,6 @@ public interface Codec<T> {
 
 public sealed class CompactEncodingException(message: String) : Exception(message)
 
-public class EncodingException(message: String) : CompactEncodingException(message)
-
 public class DecodingException(message: String) : CompactEncodingException(message)
 
 public fun <T> encode(codec: Codec<T>, value: T): ByteArray {
