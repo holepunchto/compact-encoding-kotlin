@@ -30,14 +30,14 @@ val greeting: Codec<Greeting> =
 
 class UsageTest {
   @Test
-  fun `encodes a greeting`() =
+  fun `encodes a greeting as its name then its count`() =
     assertContentEquals(
       byteArrayOf(0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2a),
       encode(greeting, Greeting("hello", 42uL)),
     )
 
   @Test
-  fun `decodes a greeting back`() =
+  fun `decodes a name then a count as a greeting`() =
     assertEquals(
       Greeting("hello", 42uL),
       decode(greeting, byteArrayOf(0x05, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2a)),
