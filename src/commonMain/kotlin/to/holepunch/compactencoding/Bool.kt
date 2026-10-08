@@ -11,7 +11,7 @@ public val bool: Codec<Boolean> =
     }
 
     override fun decode(state: State): Boolean {
-      if (state.remaining < 1) throw DecodingException("out of bounds")
+      state.ensureRemaining("bool", 1)
 
       return state.buffer[state.start++] == 1.toByte()
     }
