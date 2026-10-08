@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.github.holepunchto:compact-encoding-kotlin:<tag>")
+  implementation("com.github.holepunchto.compact-encoding-kotlin:compact-encoding-kotlin:<tag>")
 }
 ```
 
