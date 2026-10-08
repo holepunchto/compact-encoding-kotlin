@@ -20,6 +20,10 @@ dependencies {
 
 [`UsageTest.kt`](src/commonTest/kotlin/to/holepunch/compactencoding/usage/UsageTest.kt) composes the built-in codecs into one for a type of your own.
 
+## API
+
+The KDoc on each public declaration is the reference. `./gradlew dokkaGenerate` renders it to `build/dokka/html`.
+
 ## Build
 
 Building needs:
