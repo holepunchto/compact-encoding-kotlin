@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.kotlin.multiplatform.library)
+  alias(libs.plugins.dokka)
   alias(libs.plugins.ktfmt)
   id("maven-publish")
 }
@@ -38,6 +39,11 @@ kotlin {
     commonTest.dependencies { implementation(kotlin("test")) }
     jvmTest.dependencies { implementation(libs.kotlinx.serialization.json) }
   }
+}
+
+dokka {
+  dokkaSourceSets.configureEach { reportUndocumented = true }
+  dokkaPublications.html { failOnWarning = true }
 }
 
 ktfmt { googleStyle() }
@@ -93,4 +99,4 @@ val checkAscii =
     }
   }
 
-tasks.check { dependsOn(checkAscii) }
+tasks.check { dependsOn(checkAscii, "dokkaGenerate") }
