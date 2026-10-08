@@ -99,4 +99,4 @@ val checkAscii =
     }
   }
 
-tasks.check { dependsOn(checkAscii) }
+tasks.check { dependsOn(checkAscii, "dokkaGenerate") }
