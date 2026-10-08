@@ -16,6 +16,18 @@ dependencies {
 }
 ```
 
+## Build
+
+Building needs:
+
+- JDK 21
+- Node.js, whose `npm` fetches the conformance corpus
+- An Android SDK with platform `android-36`, found through `ANDROID_HOME` or `sdk.dir` in `local.properties`
+
+```sh
+./gradlew check
+```
+
 ## License
 
 Apache-2.0
