@@ -1,5 +1,10 @@
 package to.holepunch.compactencoding
 
+/**
+ * A `UShort` in two little-endian bytes.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val uint16: Codec<UShort> =
   object : Codec<UShort> {
     override fun preencode(state: State, value: UShort) {
@@ -23,6 +28,11 @@ public val uint16: Codec<UShort> =
     }
   }
 
+/**
+ * A `UInt` in four little-endian bytes.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val uint32: Codec<UInt> =
   object : Codec<UInt> {
     override fun preencode(state: State, value: UInt) {
@@ -48,6 +58,11 @@ public val uint32: Codec<UInt> =
     }
   }
 
+/**
+ * A `ULong` in eight little-endian bytes.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val uint64: Codec<ULong> =
   object : Codec<ULong> {
     override fun preencode(state: State, value: ULong) {
@@ -69,6 +84,13 @@ public val uint64: Codec<ULong> =
     }
   }
 
+/**
+ * A `ULong` in its shortest form: one byte up to 0xfc, otherwise a 0xfd, 0xfe or 0xff prefix
+ * followed by a [uint16], [uint32] or [uint64]. Decoding accepts a longer form than the value
+ * needs.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val uint: Codec<ULong> =
   object : Codec<ULong> {
     override fun preencode(state: State, value: ULong) {
@@ -120,6 +142,12 @@ public val uint: Codec<ULong> =
     }
   }
 
+/**
+ * A `Long`, zigzagged so that 0, -1, 1 and -2 become 0, 1, 2 and 3, and encoded as a [uint]. Every
+ * `Long` is carried.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val int: Codec<Long> =
   object : Codec<Long> {
     override fun preencode(state: State, value: Long) {

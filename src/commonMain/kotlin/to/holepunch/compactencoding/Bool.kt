@@ -1,5 +1,10 @@
 package to.holepunch.compactencoding
 
+/**
+ * A `Boolean` in one byte, 1 for true and 0 for false. Any byte other than 1 decodes as false.
+ *
+ * Decoding throws [DecodingException] when the bytes end before the value does.
+ */
 public val bool: Codec<Boolean> =
   object : Codec<Boolean> {
     override fun preencode(state: State, value: Boolean) {
