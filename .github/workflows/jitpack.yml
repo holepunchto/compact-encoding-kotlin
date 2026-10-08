@@ -1,0 +1,17 @@
+name: JitPack
+on:
+  push:
+    tags:
+      - v*
+permissions: {}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    name: Verify
+    steps:
+      - run: |
+          base=https://jitpack.io/com/github/holepunchto/compact-encoding-kotlin
+          for artifact in compact-encoding-kotlin compact-encoding-kotlin-jvm compact-encoding-kotlin-android; do
+            curl --fail --silent --show-error --max-time 900 --retry 3 --retry-all-errors \
+              --output /dev/null "$base/$artifact/$GITHUB_REF_NAME/$artifact-$GITHUB_REF_NAME.module"
+          done
