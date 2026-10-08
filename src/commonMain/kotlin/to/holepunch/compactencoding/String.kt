@@ -1,11 +1,11 @@
 package to.holepunch.compactencoding
 
 /**
- * A [String] as a [uint] count of UTF-8 bytes followed by the bytes. Encoding replaces an unpaired
+ * A `String` as a [uint] count of UTF-8 bytes followed by the bytes. Encoding replaces an unpaired
  * surrogate with U+FFFD, and decoding replaces each invalid sequence with U+FFFD rather than
  * failing.
  *
- * Decoding throws [DecodingException] when the count runs past the bytes remaining.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val utf8: Codec<String> =
   object : Codec<String> {

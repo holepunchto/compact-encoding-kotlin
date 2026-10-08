@@ -1,9 +1,9 @@
 package to.holepunch.compactencoding
 
 /**
- * A [ByteArray] as a [uint] count followed by that many bytes. Decoding copies the bytes out.
+ * A `ByteArray` as a [uint] count followed by that many bytes. Decoding copies the bytes out.
  *
- * Decoding throws [DecodingException] when the count runs past the bytes remaining.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val buffer: Codec<ByteArray> =
   object : Codec<ByteArray> {

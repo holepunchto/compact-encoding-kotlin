@@ -3,7 +3,7 @@ package to.holepunch.compactencoding
 /**
  * A `UShort` in two little-endian bytes.
  *
- * Decoding throws [DecodingException] when fewer than two bytes remain.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val uint16: Codec<UShort> =
   object : Codec<UShort> {
@@ -31,7 +31,7 @@ public val uint16: Codec<UShort> =
 /**
  * A `UInt` in four little-endian bytes.
  *
- * Decoding throws [DecodingException] when fewer than four bytes remain.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val uint32: Codec<UInt> =
   object : Codec<UInt> {
@@ -61,7 +61,7 @@ public val uint32: Codec<UInt> =
 /**
  * A `ULong` in eight little-endian bytes.
  *
- * Decoding throws [DecodingException] when fewer than eight bytes remain.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val uint64: Codec<ULong> =
   object : Codec<ULong> {
@@ -89,7 +89,7 @@ public val uint64: Codec<ULong> =
  * followed by a [uint16], [uint32] or [uint64]. Decoding accepts a longer form than the value
  * needs.
  *
- * Decoding throws [DecodingException] when the form runs past the bytes remaining.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val uint: Codec<ULong> =
   object : Codec<ULong> {
@@ -143,10 +143,10 @@ public val uint: Codec<ULong> =
   }
 
 /**
- * A [Long], zigzagged so that 0, -1, 1 and -2 become 0, 1, 2 and 3, and encoded as a [uint]. Every
- * [Long] is carried.
+ * A `Long`, zigzagged so that 0, -1, 1 and -2 become 0, 1, 2 and 3, and encoded as a [uint]. Every
+ * `Long` is carried.
  *
- * Decoding throws [DecodingException] when the form runs past the bytes remaining.
+ * Decoding throws [DecodingException] when the bytes end before the value does.
  */
 public val int: Codec<Long> =
   object : Codec<Long> {

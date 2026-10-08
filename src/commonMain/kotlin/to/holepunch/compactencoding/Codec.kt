@@ -14,6 +14,8 @@ public interface Codec<T> {
   /**
    * Writes [value] at [State.start] and moves past it. [state] must have been sized by [preencode]
    * and allocated.
+   *
+   * @throws IndexOutOfBoundsException if [state] has less room than [value] needs.
    */
   public fun encode(state: State, value: T)
 
@@ -25,7 +27,11 @@ public interface Codec<T> {
   public fun decode(state: State): T
 }
 
-/** A failure a codec reports. */
+/**
+ * A failure a codec reports about its input. Bytes that cannot be decoded throw
+ * [DecodingException]. Encoding into a [State] that [Codec.preencode] did not size is a caller
+ * error, and fails with the standard library exception instead.
+ */
 public sealed class CompactEncodingException(message: String) : Exception(message)
 
 /**
