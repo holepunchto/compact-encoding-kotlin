@@ -18,7 +18,7 @@ dependencies {
 
 ## Usage
 
-[`UsageTest.kt`](src/commonTest/kotlin/to/holepunch/compactencoding/usage/UsageTest.kt) composes the built-in codecs into one for a type of your own, and the build keeps it passing.
+[`UsageTest.kt`](src/commonTest/kotlin/to/holepunch/compactencoding/usage/UsageTest.kt) composes the built-in codecs into one for a type of your own.
 
 ## Build
 

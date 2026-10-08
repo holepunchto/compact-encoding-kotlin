@@ -12,7 +12,7 @@ import to.holepunch.compactencoding.utf8
 
 data class Greeting(val name: String, val count: ULong)
 
-val greeting =
+val greeting: Codec<Greeting> =
   object : Codec<Greeting> {
     override fun preencode(state: State, value: Greeting) {
       utf8.preencode(state, value.name)
@@ -24,9 +24,8 @@ val greeting =
       uint.encode(state, value.count)
     }
 
-    override fun decode(state: State): Greeting {
-      return Greeting(name = utf8.decode(state), count = uint.decode(state))
-    }
+    override fun decode(state: State) =
+      Greeting(name = utf8.decode(state), count = uint.decode(state))
   }
 
 class UsageTest {
