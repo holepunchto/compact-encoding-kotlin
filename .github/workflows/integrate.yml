@@ -44,4 +44,4 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - run: ./gradlew jvmTest testAndroidHostTest
+      - run: ./gradlew jvmTest testAndroidHostTest jsNodeTest
