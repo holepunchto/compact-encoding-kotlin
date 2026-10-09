@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- A JS target, published as `compact-encoding-kotlin-js`, so shared code that depends on this library can also compile for JS. JVM and Android output is unchanged.
+
 ## 0.1.0
 
 Initial release.
