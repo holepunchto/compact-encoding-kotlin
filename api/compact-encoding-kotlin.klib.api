@@ -1,0 +1,59 @@
+// Klib ABI Dump
+// Targets: [js]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.github.holepunchto:compact-encoding-kotlin>
+abstract interface <#A: kotlin/Any?> to.holepunch.compactencoding/Codec { // to.holepunch.compactencoding/Codec|null[0]
+    abstract fun decode(to.holepunch.compactencoding/State): #A // to.holepunch.compactencoding/Codec.decode|decode(to.holepunch.compactencoding.State){}[0]
+    abstract fun encode(to.holepunch.compactencoding/State, #A) // to.holepunch.compactencoding/Codec.encode|encode(to.holepunch.compactencoding.State;1:0){}[0]
+    abstract fun preencode(to.holepunch.compactencoding/State, #A) // to.holepunch.compactencoding/Codec.preencode|preencode(to.holepunch.compactencoding.State;1:0){}[0]
+}
+
+final class to.holepunch.compactencoding/DecodingException : to.holepunch.compactencoding/CompactEncodingException { // to.holepunch.compactencoding/DecodingException|null[0]
+    constructor <init>(kotlin/String) // to.holepunch.compactencoding/DecodingException.<init>|<init>(kotlin.String){}[0]
+}
+
+final class to.holepunch.compactencoding/State { // to.holepunch.compactencoding/State|null[0]
+    constructor <init>(kotlin/ByteArray = ...) // to.holepunch.compactencoding/State.<init>|<init>(kotlin.ByteArray){}[0]
+
+    final val remaining // to.holepunch.compactencoding/State.remaining|{}remaining[0]
+        final fun <get-remaining>(): kotlin/Int // to.holepunch.compactencoding/State.remaining.<get-remaining>|<get-remaining>(){}[0]
+
+    final var buffer // to.holepunch.compactencoding/State.buffer|{}buffer[0]
+        final fun <get-buffer>(): kotlin/ByteArray // to.holepunch.compactencoding/State.buffer.<get-buffer>|<get-buffer>(){}[0]
+        final fun <set-buffer>(kotlin/ByteArray) // to.holepunch.compactencoding/State.buffer.<set-buffer>|<set-buffer>(kotlin.ByteArray){}[0]
+    final var end // to.holepunch.compactencoding/State.end|{}end[0]
+        final fun <get-end>(): kotlin/Int // to.holepunch.compactencoding/State.end.<get-end>|<get-end>(){}[0]
+        final fun <set-end>(kotlin/Int) // to.holepunch.compactencoding/State.end.<set-end>|<set-end>(kotlin.Int){}[0]
+    final var start // to.holepunch.compactencoding/State.start|{}start[0]
+        final fun <get-start>(): kotlin/Int // to.holepunch.compactencoding/State.start.<get-start>|<get-start>(){}[0]
+        final fun <set-start>(kotlin/Int) // to.holepunch.compactencoding/State.start.<set-start>|<set-start>(kotlin.Int){}[0]
+
+    final fun allocate() // to.holepunch.compactencoding/State.allocate|allocate(){}[0]
+    final fun rewind() // to.holepunch.compactencoding/State.rewind|rewind(){}[0]
+}
+
+sealed class to.holepunch.compactencoding/CompactEncodingException : kotlin/Exception // to.holepunch.compactencoding/CompactEncodingException|null[0]
+
+final val to.holepunch.compactencoding/bool // to.holepunch.compactencoding/bool|{}bool[0]
+    final fun <get-bool>(): to.holepunch.compactencoding/Codec<kotlin/Boolean> // to.holepunch.compactencoding/bool.<get-bool>|<get-bool>(){}[0]
+final val to.holepunch.compactencoding/buffer // to.holepunch.compactencoding/buffer|{}buffer[0]
+    final fun <get-buffer>(): to.holepunch.compactencoding/Codec<kotlin/ByteArray> // to.holepunch.compactencoding/buffer.<get-buffer>|<get-buffer>(){}[0]
+final val to.holepunch.compactencoding/int // to.holepunch.compactencoding/int|{}int[0]
+    final fun <get-int>(): to.holepunch.compactencoding/Codec<kotlin/Long> // to.holepunch.compactencoding/int.<get-int>|<get-int>(){}[0]
+final val to.holepunch.compactencoding/uint // to.holepunch.compactencoding/uint|{}uint[0]
+    final fun <get-uint>(): to.holepunch.compactencoding/Codec<kotlin/ULong> // to.holepunch.compactencoding/uint.<get-uint>|<get-uint>(){}[0]
+final val to.holepunch.compactencoding/uint16 // to.holepunch.compactencoding/uint16|{}uint16[0]
+    final fun <get-uint16>(): to.holepunch.compactencoding/Codec<kotlin/UShort> // to.holepunch.compactencoding/uint16.<get-uint16>|<get-uint16>(){}[0]
+final val to.holepunch.compactencoding/uint32 // to.holepunch.compactencoding/uint32|{}uint32[0]
+    final fun <get-uint32>(): to.holepunch.compactencoding/Codec<kotlin/UInt> // to.holepunch.compactencoding/uint32.<get-uint32>|<get-uint32>(){}[0]
+final val to.holepunch.compactencoding/uint64 // to.holepunch.compactencoding/uint64|{}uint64[0]
+    final fun <get-uint64>(): to.holepunch.compactencoding/Codec<kotlin/ULong> // to.holepunch.compactencoding/uint64.<get-uint64>|<get-uint64>(){}[0]
+final val to.holepunch.compactencoding/utf8 // to.holepunch.compactencoding/utf8|{}utf8[0]
+    final fun <get-utf8>(): to.holepunch.compactencoding/Codec<kotlin/String> // to.holepunch.compactencoding/utf8.<get-utf8>|<get-utf8>(){}[0]
+
+final fun <#A: kotlin/Any?> to.holepunch.compactencoding/decode(to.holepunch.compactencoding/Codec<#A>, kotlin/ByteArray): #A // to.holepunch.compactencoding/decode|decode(to.holepunch.compactencoding.Codec<0:0>;kotlin.ByteArray){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> to.holepunch.compactencoding/encode(to.holepunch.compactencoding/Codec<#A>, #A): kotlin/ByteArray // to.holepunch.compactencoding/encode|encode(to.holepunch.compactencoding.Codec<0:0>;0:0){0§<kotlin.Any?>}[0]

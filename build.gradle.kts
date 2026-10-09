@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
@@ -27,6 +29,8 @@ kotlin {
 
   jvm { compilerOptions { jvmTarget = JvmTarget.JVM_11 } }
 
+  js { nodejs() }
+
   android {
     namespace = "to.holepunch.compactencoding"
     compileSdk = 36
@@ -47,6 +51,8 @@ dokka {
 }
 
 ktfmt { googleStyle() }
+
+plugins.withType<NodeJsPlugin> { the<NodeJsEnvSpec>().download = false }
 
 val corpusVersion = "0.2.0"
 
