@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * A `Boolean` in one byte, 1 for true and 0 for false. Any byte other than 1 decodes as false.

@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 internal fun zigZagEncode(value: Long): ULong = ((value shl 1) xor (value shr 63)).toULong()
 

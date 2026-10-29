@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * A `String` as a [uint] count of UTF-8 bytes followed by the bytes. Encoding replaces an unpaired

@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 import java.io.File
 import java.math.BigInteger

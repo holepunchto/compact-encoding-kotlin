@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * Reads and writes values of type [T] in the compact-encoding format.

@@ -1,14 +1,14 @@
-package to.holepunch.compactencoding.usage
+package to.holepunch.compactEncoding.usage
 
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
-import to.holepunch.compactencoding.Codec
-import to.holepunch.compactencoding.State
-import to.holepunch.compactencoding.decode
-import to.holepunch.compactencoding.encode
-import to.holepunch.compactencoding.uint
-import to.holepunch.compactencoding.utf8
+import to.holepunch.compactEncoding.Codec
+import to.holepunch.compactEncoding.State
+import to.holepunch.compactEncoding.decode
+import to.holepunch.compactEncoding.encode
+import to.holepunch.compactEncoding.uint
+import to.holepunch.compactEncoding.utf8
 
 data class Greeting(val name: String, val count: ULong)
 

@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 import kotlin.test.Test
 import kotlin.test.assertContentEquals

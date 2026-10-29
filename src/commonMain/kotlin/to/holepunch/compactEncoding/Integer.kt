@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * A `UShort` in two little-endian bytes.
