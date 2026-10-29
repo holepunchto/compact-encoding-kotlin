@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * A buffer and the window into it that codecs read and write.

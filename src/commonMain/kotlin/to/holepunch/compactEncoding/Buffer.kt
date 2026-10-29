@@ -1,4 +1,4 @@
-package to.holepunch.compactencoding
+package to.holepunch.compactEncoding
 
 /**
  * A `ByteArray` as a [uint] count followed by that many bytes. Decoding copies the bytes out.

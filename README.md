@@ -1,40 +1,51 @@
 # compact-encoding-kotlin
 
-Compact encoding schemes for Kotlin with the same ABI as https://github.com/holepunchto/compact-encoding
+Compact encoding schemes for Kotlin. The Kotlin counterpart of [compact-encoding](https://github.com/holepunchto/compact-encoding), and wire compatible with it.
 
-## Install
-
-Published through [JitPack](https://jitpack.io/#holepunchto/compact-encoding-kotlin):
-
-```kotlin
+```groovy
 repositories {
-  maven("https://jitpack.io")
+  maven { url "https://jitpack.io" }
 }
 
 dependencies {
-  implementation("com.github.holepunchto.compact-encoding-kotlin:compact-encoding-kotlin:<tag>")
+  implementation "com.github.holepunchto.compact-encoding-kotlin:compact-encoding-kotlin:<tag>"
 }
 ```
 
 ## Usage
 
-[`UsageTest.kt`](src/commonTest/kotlin/to/holepunch/compactencoding/usage/UsageTest.kt) composes the built-in codecs into one for a type of your own.
+```kotlin
+import to.holepunch.compactEncoding.Codec
+import to.holepunch.compactEncoding.State
+import to.holepunch.compactEncoding.decode
+import to.holepunch.compactEncoding.encode
+import to.holepunch.compactEncoding.uint
+import to.holepunch.compactEncoding.utf8
 
-## API
+data class Greeting(val name: String, val count: ULong)
 
-The KDoc on each public declaration is the reference. `./gradlew dokkaGenerate` renders it to `build/dokka/html`.
+val greeting: Codec<Greeting> =
+  object : Codec<Greeting> {
+    override fun preencode(state: State, value: Greeting) {
+      utf8.preencode(state, value.name)
+      uint.preencode(state, value.count)
+    }
 
-## Build
+    override fun encode(state: State, value: Greeting) {
+      utf8.encode(state, value.name)
+      uint.encode(state, value.count)
+    }
 
-Building needs:
+    override fun decode(state: State) =
+      Greeting(name = utf8.decode(state), count = uint.decode(state))
+  }
 
-- JDK 21
-- Node.js, whose `npm` fetches the conformance corpus
-- An Android SDK with platform `android-36`, found through `ANDROID_HOME` or `sdk.dir` in `local.properties`
+val data = encode(greeting, Greeting("hello", 42uL))
 
-```sh
-./gradlew check
+decode(greeting, data) // Greeting(name=hello, count=42)
 ```
+
+Codecs are composed from the built-in ones, which each implement `preencode`, `encode`, and `decode`.
 
 ## License
 

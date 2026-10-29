@@ -1,39 +1,39 @@
-public final class to/holepunch/compactencoding/BoolKt {
-	public static final fun getBool ()Lto/holepunch/compactencoding/Codec;
+public final class to/holepunch/compactEncoding/BoolKt {
+	public static final fun getBool ()Lto/holepunch/compactEncoding/Codec;
 }
 
-public final class to/holepunch/compactencoding/BufferKt {
-	public static final fun getBuffer ()Lto/holepunch/compactencoding/Codec;
+public final class to/holepunch/compactEncoding/BufferKt {
+	public static final fun getBuffer ()Lto/holepunch/compactEncoding/Codec;
 }
 
-public abstract interface class to/holepunch/compactencoding/Codec {
-	public abstract fun decode (Lto/holepunch/compactencoding/State;)Ljava/lang/Object;
-	public abstract fun encode (Lto/holepunch/compactencoding/State;Ljava/lang/Object;)V
-	public abstract fun preencode (Lto/holepunch/compactencoding/State;Ljava/lang/Object;)V
+public abstract interface class to/holepunch/compactEncoding/Codec {
+	public abstract fun decode (Lto/holepunch/compactEncoding/State;)Ljava/lang/Object;
+	public abstract fun encode (Lto/holepunch/compactEncoding/State;Ljava/lang/Object;)V
+	public abstract fun preencode (Lto/holepunch/compactEncoding/State;Ljava/lang/Object;)V
 }
 
-public final class to/holepunch/compactencoding/CodecKt {
-	public static final fun decode (Lto/holepunch/compactencoding/Codec;[B)Ljava/lang/Object;
-	public static final fun encode (Lto/holepunch/compactencoding/Codec;Ljava/lang/Object;)[B
+public final class to/holepunch/compactEncoding/CodecKt {
+	public static final fun decode (Lto/holepunch/compactEncoding/Codec;[B)Ljava/lang/Object;
+	public static final fun encode (Lto/holepunch/compactEncoding/Codec;Ljava/lang/Object;)[B
 }
 
-public abstract class to/holepunch/compactencoding/CompactEncodingException : java/lang/Exception {
+public abstract class to/holepunch/compactEncoding/CompactEncodingException : java/lang/Exception {
 	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
-public final class to/holepunch/compactencoding/DecodingException : to/holepunch/compactencoding/CompactEncodingException {
+public final class to/holepunch/compactEncoding/DecodingException : to/holepunch/compactEncoding/CompactEncodingException {
 	public fun <init> (Ljava/lang/String;)V
 }
 
-public final class to/holepunch/compactencoding/IntegerKt {
-	public static final fun getInt ()Lto/holepunch/compactencoding/Codec;
-	public static final fun getUint ()Lto/holepunch/compactencoding/Codec;
-	public static final fun getUint16 ()Lto/holepunch/compactencoding/Codec;
-	public static final fun getUint32 ()Lto/holepunch/compactencoding/Codec;
-	public static final fun getUint64 ()Lto/holepunch/compactencoding/Codec;
+public final class to/holepunch/compactEncoding/IntegerKt {
+	public static final fun getInt ()Lto/holepunch/compactEncoding/Codec;
+	public static final fun getUint ()Lto/holepunch/compactEncoding/Codec;
+	public static final fun getUint16 ()Lto/holepunch/compactEncoding/Codec;
+	public static final fun getUint32 ()Lto/holepunch/compactEncoding/Codec;
+	public static final fun getUint64 ()Lto/holepunch/compactEncoding/Codec;
 }
 
-public final class to/holepunch/compactencoding/State {
+public final class to/holepunch/compactEncoding/State {
 	public fun <init> ()V
 	public fun <init> ([B)V
 	public synthetic fun <init> ([BILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -48,7 +48,7 @@ public final class to/holepunch/compactencoding/State {
 	public final fun setStart (I)V
 }
 
-public final class to/holepunch/compactencoding/StringKt {
-	public static final fun getUtf8 ()Lto/holepunch/compactencoding/Codec;
+public final class to/holepunch/compactEncoding/StringKt {
+	public static final fun getUtf8 ()Lto/holepunch/compactEncoding/Codec;
 }
 
